@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
   <Project Path="HouseholdTracker.Core/HouseholdTracker.Core.csproj" />
   <Project Path="HouseholdTracker.Tests/HouseholdTracker.Tests.csproj" />
   <Project Path="HouseholdTracker/HouseholdTracker.csproj">
