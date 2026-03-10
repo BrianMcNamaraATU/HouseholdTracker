@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace HouseholdTracker
+﻿namespace HouseholdTracker
 {
     public partial class App : Application
     {
