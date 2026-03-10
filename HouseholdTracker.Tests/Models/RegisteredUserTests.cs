@@ -1,6 +1,6 @@
 ﻿using HouseholdTracker.Core.Models;
 
-namespace HouseholdTrackerTests;
+namespace HouseholdTracker.Tests.Models;
 
 [TestFixture]
 internal sealed class RegisteredUserTests
