@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using HouseholdTracker.Core.Services;
+using Microsoft.Extensions.Logging;
 
 namespace HouseholdTracker
 {
@@ -18,6 +19,13 @@ namespace HouseholdTracker
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+            // Database locations
+            string centralDbPath = Path.Combine(FileSystem.AppDataDirectory, "centralDatabase.db");
+            string localDbPath = Path.Combine(FileSystem.AppDataDirectory, "localDatabase.db");
+
+            // Add a reference to the Services
+            builder.Services.AddSingleton(new CentralDatabaseService(centralDbPath));
+
 
             return builder.Build();
         }
