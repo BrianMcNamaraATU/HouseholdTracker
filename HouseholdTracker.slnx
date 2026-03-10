@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="HouseholdTracker.Core/HouseholdTracker.Core.csproj" />
+  <Project Path="HouseholdTracker.Tests/HouseholdTracker.Tests.csproj" />
+  <Project Path="HouseholdTracker/HouseholdTracker.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>
