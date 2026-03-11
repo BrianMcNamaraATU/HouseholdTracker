@@ -2,9 +2,15 @@
 
 namespace HouseholdTracker.Tests.Models;
 
+/// <summary>
+/// Tests for the SharedAccountInvite class
+/// </summary>
 [TestFixture]
-internal sealed class SharedAccountIviteTests
+internal sealed class SharedAccountInviteTests
 {
+    /// <summary>
+    /// Ensure the expected default values are set in an empty constructor
+    /// </summary>
     [Test]
     public void DefaultConstructorTest()
     {
@@ -25,6 +31,9 @@ internal sealed class SharedAccountIviteTests
         }
     }
 
+    /// <summary>
+    /// Ensure the correct values are set in a non-empty constructor
+    /// </summary>
     [Test]
     public void DefaultSetterTest()
     {

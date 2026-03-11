@@ -1,33 +1,36 @@
 ﻿using HouseholdTracker.Core.Services;
 using Microsoft.Extensions.Logging;
+using HouseholdTracker.Services;
 
-namespace HouseholdTracker
+namespace HouseholdTracker;
+
+public static class MauiProgram
 {
-    public static class MauiProgram
+    public static MauiApp CreateMauiApp()
     {
-        public static MauiApp CreateMauiApp()
-        {
-            var builder = MauiApp.CreateBuilder();
-            builder
-                .UseMauiApp<App>()
-                .ConfigureFonts(fonts =>
-                {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            });
 
 #if DEBUG
-            builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
-            // Database locations
-            string centralDbPath = Path.Combine(FileSystem.AppDataDirectory, "centralDatabase.db");
-            string localDbPath = Path.Combine(FileSystem.AppDataDirectory, "localDatabase.db");
+        // Database locations
+        var centralDbPath = Path.Combine(FileSystem.AppDataDirectory, "centralDatabase.db");
+        var localDbPath = Path.Combine(FileSystem.AppDataDirectory, "localDatabase.db");
 
-            // Add a reference to the Services
-            builder.Services.AddSingleton(new CentralDatabaseService(centralDbPath));
+        // Static objects
+        LoggedInUserService.Initialize(new MauiStorageLoggedInUserService());
+
+        // Add a reference to the Services
+        builder.Services.AddSingleton(new CentralDatabaseService(centralDbPath));
 
 
-            return builder.Build();
-        }
+        return builder.Build();
     }
 }
