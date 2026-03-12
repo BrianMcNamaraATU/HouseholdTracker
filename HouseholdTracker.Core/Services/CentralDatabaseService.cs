@@ -34,7 +34,7 @@ public class CentralDatabaseService(string dbPath) : IAsyncDisposable
     /// <returns>True if the credentials are valid, false if they aren't</returns>
     internal async Task<bool> UserIsValid(int id, string APIKey)
     {
-        RegisteredUser user = await _db.Table<RegisteredUser>()
+        var user = await _db.Table<RegisteredUser>()
             .Where(ru => ru.Id == id && ru.APIKey == APIKey)
             .FirstOrDefaultAsync().ConfigureAwait(false);
 

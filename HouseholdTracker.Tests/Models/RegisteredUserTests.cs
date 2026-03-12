@@ -2,9 +2,15 @@
 
 namespace HouseholdTracker.Tests.Models;
 
+/// <summary>
+/// Tests for the RegisteredUser class
+/// </summary>
 [TestFixture]
 internal sealed class RegisteredUserTests
 {
+    /// <summary>
+    /// Ensure the expected default values are used in an empty constructor
+    /// </summary>
     [Test]
     public void DefaultConstructorTest()
     {
@@ -22,6 +28,9 @@ internal sealed class RegisteredUserTests
         }
     }
 
+    /// <summary>
+    /// Ensure the values are set correctly in a non-empty constructor
+    /// </summary>
     [Test]
     public void DefaultSetterTest()
     {
