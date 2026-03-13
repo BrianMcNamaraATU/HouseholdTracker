@@ -20,4 +20,4 @@ jobs:
           dotnet-version: '10.0'  # match your project's target SDK
 
       - name: Check code formatting
-        run: dotnet format ./src/MyApp.Core/MyApp.Core.csproj --verify-no-changes --verbosity diagnostic
+        run: dotnet format ./src/HouseholdTracker/HouseholdTracker.Core.csproj --verify-no-changes --verbosity diagnostic
