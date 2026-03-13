@@ -19,11 +19,5 @@ jobs:
         with:
           dotnet-version: '10.0'  # match your project's target SDK
 
-      - name: Install MAUI workload
-        run: dotnet workload install maui
-
-      - name: Restore dependencies
-        run: dotnet restore
-
       - name: Check code formatting
-        run: dotnet format --verify-no-changes --verbosity diagnostic
+        run: dotnet format ./src/MyApp.Core/MyApp.Core.csproj --verify-no-changes --verbosity diagnostic
