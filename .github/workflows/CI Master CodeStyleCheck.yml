@@ -18,8 +18,66 @@ jobs:
         with:
           dotnet-version: '10.0'
 
-      - name: List all project and solution files
-        run: find . -name "*.csproj" -o -name "*.sln"
+      # HouseholdTracker.Core
+      - name: "Core: Check whitespace"
+        id: core-whitespace
+        continue-on-error: true
+        run: dotnet format whitespace ./HouseholdTracker.Core/HouseholdTracker.Core.csproj --verify-no-changes --no-restore --verbosity diagnostic
 
-      - name: Check code formatting
-        run: dotnet format ./src/HouseholdTracker/HouseholdTracker.Core.csproj --verify-no-changes --verbosity diagnostic
+      - name: "Core: Check code style"
+        id: core-style
+        continue-on-error: true
+        run: dotnet format style ./HouseholdTracker.Core/HouseholdTracker.Core.csproj --verify-no-changes --no-restore --verbosity diagnostic
+
+      - name: "Core: Check analyzers"
+        id: core-analyzers
+        continue-on-error: true
+        run: dotnet format analyzers ./HouseholdTracker.Core/HouseholdTracker.Core.csproj --verify-no-changes --no-restore --verbosity diagnostic
+
+      # HouseholdTracker
+      - name: "App: Check whitespace"
+        id: app-whitespace
+        continue-on-error: true
+        run: dotnet format whitespace ./HouseholdTracker/HouseholdTracker.csproj --verify-no-changes --no-restore --verbosity diagnostic
+
+      - name: "App: Check code style"
+        id: app-style
+        continue-on-error: true
+        run: dotnet format style ./HouseholdTracker/HouseholdTracker.csproj --verify-no-changes --no-restore --verbosity diagnostic
+
+      - name: "App: Check analyzers"
+        id: app-analyzers
+        continue-on-error: true
+        run: dotnet format analyzers ./HouseholdTracker/HouseholdTracker.csproj --verify-no-changes --no-restore --verbosity diagnostic
+
+      # HouseholdTracker.Tests
+      - name: "Tests: Check whitespace"
+        id: tests-whitespace
+        continue-on-error: true
+        run: dotnet format whitespace ./HouseholdTracker.Tests/HouseholdTracker.Tests.csproj --verify-no-changes --no-restore --verbosity diagnostic
+
+      - name: "Tests: Check code style"
+        id: tests-style
+        continue-on-error: true
+        run: dotnet format style ./HouseholdTracker.Tests/HouseholdTracker.Tests.csproj --verify-no-changes --no-restore --verbosity diagnostic
+
+      - name: "Tests: Check analyzers"
+        id: tests-analyzers
+        continue-on-error: true
+        run: dotnet format analyzers ./HouseholdTracker.Tests/HouseholdTracker.Tests.csproj --verify-no-changes --no-restore --verbosity diagnostic
+
+      # Fail if anything failed
+      - name: Fail if any check failed
+        if: >-
+          steps.core-whitespace.outcome == 'failure' ||
+          steps.core-style.outcome == 'failure' ||
+          steps.core-analyzers.outcome == 'failure' ||
+          steps.app-whitespace.outcome == 'failure' ||
+          steps.app-style.outcome == 'failure' ||
+          steps.app-analyzers.outcome == 'failure' ||
+          steps.tests-whitespace.outcome == 'failure' ||
+          steps.tests-style.outcome == 'failure' ||
+          steps.tests-analyzers.outcome == 'failure'
+        run: |
+          echo "One or more formatting checks failed. Review the steps above for details."
+          exit 1
