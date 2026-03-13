@@ -9,7 +9,6 @@ on:
 jobs:
   format-check:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,7 +16,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0'  # match your project's target SDK
+          dotnet-version: '10.0'
+
+      - name: List all project and solution files
+        run: find . -name "*.csproj" -o -name "*.sln"
 
       - name: Check code formatting
         run: dotnet format ./src/HouseholdTracker/HouseholdTracker.Core.csproj --verify-no-changes --verbosity diagnostic
