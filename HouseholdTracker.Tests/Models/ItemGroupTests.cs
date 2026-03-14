@@ -37,7 +37,7 @@ internal sealed class ItemGroupTests
     [Test]
     public void DefaultSetterTest()
     {
-        var itemGroup = new ItemGroup(1,2,"default",1,ItemSizes.ML,false,10,false,false,1);
+        var itemGroup = new ItemGroup(1, 2, "default", 1, ItemSizes.ML, false, 10, false, false, 1);
 
         using (Assert.EnterMultipleScope())
         {
