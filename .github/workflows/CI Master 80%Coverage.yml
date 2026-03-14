@@ -2,7 +2,7 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 # This Template was originally supplied by github.
 
-name: .NET
+name: CI Master 80%Coverage
 
 on:
   push:
