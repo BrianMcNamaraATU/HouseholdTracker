@@ -27,7 +27,7 @@ internal sealed class ItemTests
             Assert.That(item.ItemSize, Is.EqualTo(ItemSizes.Grams));
             Assert.That(item.CurrentLevelAsPercentage, Is.Zero);
             Assert.That(item.LowPercentageWarning, Is.Zero);
-            Assert.That(item.CurrentExpiry, Is.EqualTo(DateOnly.MinValue));
+            Assert.That(item.CurrentExpiry, Is.EqualTo(DateTime.MinValue));
             Assert.That(item.LastUpdateUTC, Is.EqualTo(DateTime.MinValue));
             Assert.That(item.Enabled, Is.True);
             Assert.That(item.SortOrder, Is.Zero);
@@ -40,7 +40,7 @@ internal sealed class ItemTests
     [Test]
     public void DefaultSetterTest()
     {
-        var item = new Item(1, 2, "default", 1, false, 100, ItemSizes.ML, 1, 1, DateOnly.MaxValue, DateTime.MaxValue, false, 1);
+        var item = new Item(1, 2, "default", 1, false, 100, ItemSizes.ML, 1, 1, DateTime.MaxValue, DateTime.MaxValue, false, 1);
 
         using (Assert.EnterMultipleScope())
         {
@@ -53,7 +53,7 @@ internal sealed class ItemTests
             Assert.That(item.ItemSize, Is.EqualTo(ItemSizes.ML));
             Assert.That(item.CurrentLevelAsPercentage, Is.EqualTo(1));
             Assert.That(item.LowPercentageWarning, Is.EqualTo(1));
-            Assert.That(item.CurrentExpiry, Is.EqualTo(DateOnly.MaxValue));
+            Assert.That(item.CurrentExpiry, Is.EqualTo(DateTime.MaxValue));
             Assert.That(item.LastUpdateUTC, Is.EqualTo(DateTime.MaxValue));
             Assert.That(item.Enabled, Is.False);
             Assert.That(item.SortOrder, Is.EqualTo(1));

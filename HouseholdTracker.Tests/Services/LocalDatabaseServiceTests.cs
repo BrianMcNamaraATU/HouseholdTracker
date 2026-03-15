@@ -11,9 +11,16 @@ public class LocalDatabaseServiceTests
     private LocalDatabaseService _service;
     private string _dbPath;
 
+    private DateTime _currentDate;
+    private DateTime _currentDateTime;
+
     private ItemGroup _itemGroup1;
     private ItemGroup _itemGroup2;
     private ItemGroup _itemGroup3;
+
+    private Item _item1;
+    private Item _item2;
+    private Item _item3;
 
     /// <summary>
     /// Create a new entity of the LocalDatabaseService for each test
@@ -24,6 +31,9 @@ public class LocalDatabaseServiceTests
         _dbPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.db");
         _service = new LocalDatabaseService(_dbPath);
         await _service.InitAsync();
+
+        _currentDate = DateTime.Today;
+        _currentDateTime = DateTime.UtcNow;
 
         _itemGroup1 = new ItemGroup
         {
@@ -66,6 +76,54 @@ public class LocalDatabaseServiceTests
             OnlineMatched = true,
             SortOrder = 3
         };
+
+        _item1 = new Item
+        {
+            Id = 1,
+            UserId = 1,
+            Name = "Item1",
+            Icon = 1,
+            ExpiryVisible = true,
+            MaxSize = 100,
+            ItemSize = ItemSizes.ML,
+            CurrentLevelAsPercentage = 80,
+            CurrentExpiry = _currentDate.AddDays(1),
+            LastUpdateUTC = _currentDateTime,
+            Enabled = true,
+            SortOrder = 1
+        };
+
+        _item2 = new Item
+        {
+            Id = 2,
+            UserId = 1,
+            Name = "Item2",
+            Icon = 2,
+            ExpiryVisible = true,
+            MaxSize = 100,
+            ItemSize = ItemSizes.ML,
+            CurrentLevelAsPercentage = 70,
+            CurrentExpiry = _currentDate.AddDays(2),
+            LastUpdateUTC = _currentDateTime.AddDays(-1),
+            Enabled = true,
+            SortOrder = 2
+        };
+
+        _item3 = new Item
+        {
+            Id = 3,
+            UserId = 2,
+            Name = "Item3",
+            Icon = 1,
+            ExpiryVisible = true,
+            MaxSize = 100,
+            ItemSize = ItemSizes.Grams,
+            CurrentLevelAsPercentage = 90,
+            CurrentExpiry = _currentDate,
+            LastUpdateUTC = _currentDateTime.AddHours(-1),
+            Enabled = false,
+            SortOrder = 1
+        };
     }
 
     /// <summary>
@@ -82,8 +140,9 @@ public class LocalDatabaseServiceTests
 
     #region "ItemGroup"
     /// <summary>
-    /// Test to check if inserting 2 Item Groups functions correctly
-    /// For success the total count should be 2
+    /// Test to check if inserting 3 Item Groups functions correctly
+    /// For success the total count should be 3, and then removing one
+    /// giving a new total of 2
     /// </summary>
     [Test]
     public async Task AddMultipleItemGroups_ShouldInsertSuccessfully()
@@ -161,6 +220,92 @@ public class LocalDatabaseServiceTests
         {
             Assert.That(await _service.GetItemGroupsAsync(), Has.Count.EqualTo(3));
             Assert.That(await _service.GetItemGroupsActiveAsync(), Has.Count.EqualTo(1));
+        }
+    }
+    #endregion
+
+    #region "Item"
+    /// <summary>
+    /// Test to check if inserting 2 Items functions correctly
+    /// For success the total count should be 3
+    /// And then remove one, giving a total of 2
+    /// </summary>
+    [Test]
+    public async Task AddMultipleItemsRemove1_ShouldInsertSuccessfully()
+    {
+        var result1 = await _service.AddItemAsync(_item1);
+        var result2 = await _service.AddItemAsync(_item2);
+        await _service.AddItemAsync(_item3);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(result1, Is.EqualTo(1));
+            Assert.That(_item1.Id, Is.EqualTo(1));
+            Assert.That(result2, Is.EqualTo(1));
+            Assert.That(_item2.Id, Is.EqualTo(2));
+            Assert.That(await _service.GetItemCountAsync(), Is.EqualTo(3));
+            Assert.That(await _service.GetItemAsync(), Has.Count.EqualTo(3));
+            Assert.That(await _service.GetItemActiveAsync(), Has.Count.EqualTo(2));
+        }
+
+        // Remove one of the Items
+        await _service.DeleteItemAsync(_item1);
+        Assert.That(await _service.GetItemCountAsync(), Is.EqualTo(2));
+    }
+
+    /// <summary>
+    /// Test insertions, followed by deletions, followed by further insertions works
+    /// It will work if the same Id can be inserted after the database has had all its
+    /// previous Item deleted
+    /// </summary>
+    /// <returns></returns>
+    [Test]
+    public async Task InsertionDeletionInsertionItemTest()
+    {
+        await _service.AddItemAsync(_item1);
+        await _service.AddItemAsync(_item2);
+        var result1 = await _service.GetItemCountAsync();
+
+        await _service.DeleteItemAllAsync();
+        var result2 = await _service.GetItemCountAsync();
+
+        await _service.AddItemAsync(_item1);
+        await _service.AddItemAsync(_item2);
+        await _service.AddItemAsync(_item3);
+        var result3 = await _service.GetItemCountAsync();
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(result1, Is.EqualTo(2));
+            Assert.That(result2, Is.Zero);
+            Assert.That(result3, Is.EqualTo(3));
+        }
+    }
+
+    /// <summary>
+    /// Test updating the Items in the LocalDatabaseService
+    /// </summary>
+    /// <returns></returns>
+    [Test]
+    public async Task UpdateitemTest_EnabledStatusChanges()
+    {
+        await _service.AddItemAsync(_item1);
+        await _service.AddItemAsync(_item2);
+        await _service.AddItemAsync(_item3);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(await _service.GetItemAsync(), Has.Count.EqualTo(3));
+            Assert.That(await _service.GetItemActiveAsync(), Has.Count.EqualTo(2));
+        }
+
+        _item1.Enabled = false;
+        await _service.UpdateItemAsync(_item1);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(await _service.GetItemAsync(), Has.Count.EqualTo(3));
+            Assert.That(await _service.GetItemActiveAsync(), Has.Count.EqualTo(1));
         }
     }
     #endregion
