@@ -22,12 +22,14 @@ public static class MauiProgram
 #endif
         // Database locations
         var centralDbPath = Path.Combine(FileSystem.AppDataDirectory, "centralDatabase.db");
+        var localDbPath = Path.Combine(FileSystem.AppDataDirectory, "localDatabase.db");
 
         // Static objects
         LoggedInUserService.Initialize(new MauiStorageLoggedInUserService());
 
         // Add a reference to the Services
         builder.Services.AddSingleton(new CentralDatabaseService(centralDbPath));
+        builder.Services.AddSingleton(new LocalDatabaseService(localDbPath));
 
         return builder.Build();
     }
