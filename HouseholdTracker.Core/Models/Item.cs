@@ -17,7 +17,7 @@ internal class Item
     /// </summary>
     public int CurrentLevelAsPercentage { get; set; }
     public int LowPercentageWarning { get; set; }
-    public DateOnly CurrentExpiry { get; set; } = DateOnly.MinValue;
+    public DateTime CurrentExpiry { get; set; } = DateTime.MinValue;
     public DateTime LastUpdateUTC { get; set; } = DateTime.MinValue;
     public bool Enabled { get; set; } = true;
     public int SortOrder { get; set; } = 0;
@@ -25,7 +25,7 @@ internal class Item
     public Item() { }
 
 #pragma warning disable S107
-    public Item(int id, int userId, string name, int icon, bool expiryVisible, int maxSize, ItemSizes itemSize, int currentLevelAsPercentage, int lowPercentageWarning, DateOnly currentExpiry, DateTime lastUpdateUTC, bool enabled, int sortOrder)
+    public Item(int id, int userId, string name, int icon, bool expiryVisible, int maxSize, ItemSizes itemSize, int currentLevelAsPercentage, int lowPercentageWarning, DateTime currentExpiry, DateTime lastUpdateUTC, bool enabled, int sortOrder)
     {
         Id = id;
         UserId = userId;
