@@ -56,7 +56,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="group">The Item Group to add</param>
     /// <returns></returns>
-    internal Task<int> AddItemGroupAsync(ItemGroup group) =>
+    internal Task<int> AddAsync(ItemGroup group) =>
         _db.InsertAsync(group);
 
     /// <summary>
@@ -64,7 +64,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="group">The Item Group to update</param>
     /// <returns></returns>
-    internal Task<int> UpdateItemGroupAsync(ItemGroup group) =>
+    internal Task<int> UpdateAsync(ItemGroup group) =>
         _db.UpdateAsync(group);
 
     /// <summary>
@@ -72,7 +72,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="group">The Item Group to delete</param>
     /// <returns></returns>
-    internal Task<int> DeleteItemGroupAsync(ItemGroup group) =>
+    internal Task<int> DeleteAsync(ItemGroup group) =>
         _db.DeleteAsync(group);
 
     /// <summary>
@@ -114,7 +114,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="itm">The Item to add</param>
     /// <returns></returns>
-    internal Task<int> AddItemAsync(Item itm) =>
+    internal Task<int> AddAsync(Item itm) =>
         _db.InsertAsync(itm);
 
     /// <summary>
@@ -122,7 +122,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="itm">The Item to update</param>
     /// <returns></returns>
-    internal Task<int> UpdateItemAsync(Item itm) =>
+    internal Task<int> UpdateAsync(Item itm) =>
         _db.UpdateAsync(itm);
 
     /// <summary>
@@ -130,7 +130,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="itm">The Item to delete</param>
     /// <returns></returns>
-    internal Task<int> DeleteItemAsync(Item itm) =>
+    internal Task<int> DeleteAsync(Item itm) =>
         _db.DeleteAsync(itm);
 
     /// <summary>
@@ -163,7 +163,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="pref">The UserPreference to add</param>
     /// <returns></returns>
-    internal Task<int> AddUserPreferenceAsync(UserPreferences pref) =>
+    internal Task<int> AddAsync(UserPreferences pref) =>
         _db.InsertAsync(pref);
 
     /// <summary>
@@ -171,7 +171,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="pref">The UserPreference to update</param>
     /// <returns></returns>
-    internal Task<int> UpdateUserPreferenceAsync(UserPreferences pref) =>
+    internal Task<int> UpdateAsync(UserPreferences pref) =>
         _db.UpdateAsync(pref);
 
     /// <summary>
@@ -179,7 +179,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="pref">The UserPreference to delete</param>
     /// <returns></returns>
-    internal Task<int> DeleteUserPreferenceAsync(UserPreferences pref) =>
+    internal Task<int> DeleteAsync(UserPreferences pref) =>
         _db.DeleteAsync(pref);
 
     /// <summary>

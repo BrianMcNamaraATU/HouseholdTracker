@@ -166,9 +166,9 @@ public class LocalDatabaseServiceTests
     [Test]
     public async Task AddMultipleItemGroups_ShouldInsertSuccessfully()
     {
-        var result1 = await _service.AddItemGroupAsync(_itemGroup1);
-        var result2 = await _service.AddItemGroupAsync(_itemGroup2);
-        await _service.AddItemGroupAsync(_itemGroup3);
+        var result1 = await _service.AddAsync(_itemGroup1);
+        var result2 = await _service.AddAsync(_itemGroup2);
+        await _service.AddAsync(_itemGroup3);
 
         using (Assert.EnterMultipleScope())
         {
@@ -182,7 +182,7 @@ public class LocalDatabaseServiceTests
         }
 
         // Remove one of the ItemGroups
-        await _service.DeleteItemGroupAsync(_itemGroup1);
+        await _service.DeleteAsync(_itemGroup1);
         Assert.That(await _service.GetItemGroupCountAsync(), Is.EqualTo(2));
     }
 
@@ -195,16 +195,16 @@ public class LocalDatabaseServiceTests
     [Test]
     public async Task InsertionDeletionInsertionTest()
     {
-        await _service.AddItemGroupAsync(_itemGroup1);
-        await _service.AddItemGroupAsync(_itemGroup2);
+        await _service.AddAsync(_itemGroup1);
+        await _service.AddAsync(_itemGroup2);
         var result1 = await _service.GetItemGroupCountAsync();
 
         await _service.DeleteItemGroupsAllAsync();
         var result2 = await _service.GetItemGroupCountAsync();
 
-        await _service.AddItemGroupAsync(_itemGroup1);
-        await _service.AddItemGroupAsync(_itemGroup2);
-        await _service.AddItemGroupAsync(_itemGroup3);
+        await _service.AddAsync(_itemGroup1);
+        await _service.AddAsync(_itemGroup2);
+        await _service.AddAsync(_itemGroup3);
         var result3 = await _service.GetItemGroupCountAsync();
 
         using (Assert.EnterMultipleScope())
@@ -222,9 +222,9 @@ public class LocalDatabaseServiceTests
     [Test]
     public async Task UpdateTest_EnabledStatusChanges()
     {
-        await _service.AddItemGroupAsync(_itemGroup1);
-        await _service.AddItemGroupAsync(_itemGroup2);
-        await _service.AddItemGroupAsync(_itemGroup3);
+        await _service.AddAsync(_itemGroup1);
+        await _service.AddAsync(_itemGroup2);
+        await _service.AddAsync(_itemGroup3);
 
         using (Assert.EnterMultipleScope())
         {
@@ -233,7 +233,7 @@ public class LocalDatabaseServiceTests
         }
 
         _itemGroup1.Enabled = false;
-        await _service.UpdateItemGroupAsync(_itemGroup1);
+        await _service.UpdateAsync(_itemGroup1);
 
         using (Assert.EnterMultipleScope())
         {
@@ -252,9 +252,9 @@ public class LocalDatabaseServiceTests
     [Test]
     public async Task AddMultipleItemsRemove1_ShouldInsertSuccessfully()
     {
-        var result1 = await _service.AddItemAsync(_item1);
-        var result2 = await _service.AddItemAsync(_item2);
-        await _service.AddItemAsync(_item3);
+        var result1 = await _service.AddAsync(_item1);
+        var result2 = await _service.AddAsync(_item2);
+        await _service.AddAsync(_item3);
 
         using (Assert.EnterMultipleScope())
         {
@@ -268,7 +268,7 @@ public class LocalDatabaseServiceTests
         }
 
         // Remove one of the Items
-        await _service.DeleteItemAsync(_item1);
+        await _service.DeleteAsync(_item1);
         Assert.That(await _service.GetItemCountAsync(), Is.EqualTo(2));
     }
 
@@ -281,16 +281,16 @@ public class LocalDatabaseServiceTests
     [Test]
     public async Task InsertionDeletionInsertionItemTest()
     {
-        await _service.AddItemAsync(_item1);
-        await _service.AddItemAsync(_item2);
+        await _service.AddAsync(_item1);
+        await _service.AddAsync(_item2);
         var result1 = await _service.GetItemCountAsync();
 
         await _service.DeleteItemAllAsync();
         var result2 = await _service.GetItemCountAsync();
 
-        await _service.AddItemAsync(_item1);
-        await _service.AddItemAsync(_item2);
-        await _service.AddItemAsync(_item3);
+        await _service.AddAsync(_item1);
+        await _service.AddAsync(_item2);
+        await _service.AddAsync(_item3);
         var result3 = await _service.GetItemCountAsync();
 
         using (Assert.EnterMultipleScope())
@@ -308,9 +308,9 @@ public class LocalDatabaseServiceTests
     [Test]
     public async Task UpdateitemTest_EnabledStatusChanges()
     {
-        await _service.AddItemAsync(_item1);
-        await _service.AddItemAsync(_item2);
-        await _service.AddItemAsync(_item3);
+        await _service.AddAsync(_item1);
+        await _service.AddAsync(_item2);
+        await _service.AddAsync(_item3);
 
         using (Assert.EnterMultipleScope())
         {
@@ -319,7 +319,7 @@ public class LocalDatabaseServiceTests
         }
 
         _item1.Enabled = false;
-        await _service.UpdateItemAsync(_item1);
+        await _service.UpdateAsync(_item1);
 
         using (Assert.EnterMultipleScope())
         {
@@ -338,8 +338,8 @@ public class LocalDatabaseServiceTests
     [Test]
     public async Task AddMultipleUserPreferencesRemove1_ShouldInsertSuccessfully()
     {
-        var result1 = await _service.AddUserPreferenceAsync(_pref1);
-        var result2 = await _service.AddUserPreferenceAsync(_pref2);
+        var result1 = await _service.AddAsync(_pref1);
+        var result2 = await _service.AddAsync(_pref2);
 
         using (Assert.EnterMultipleScope())
         {
@@ -352,7 +352,7 @@ public class LocalDatabaseServiceTests
         }
 
         // Remove one of the Items
-        await _service.DeleteUserPreferenceAsync(_pref1);
+        await _service.DeleteAsync(_pref1);
         Assert.That(await _service.GetUserPreferencesCountAsync(), Is.EqualTo(1));
     }
 
@@ -365,15 +365,15 @@ public class LocalDatabaseServiceTests
     [Test]
     public async Task InsertionDeletionInsertionUserPreferencesTest()
     {
-        await _service.AddUserPreferenceAsync(_pref1);
-        await _service.AddUserPreferenceAsync(_pref2);
+        await _service.AddAsync(_pref1);
+        await _service.AddAsync(_pref2);
         var result1 = await _service.GetUserPreferencesCountAsync();
 
         await _service.DeleteUserPreferencesAllAsync();
         var result2 = await _service.GetUserPreferencesCountAsync();
 
-        await _service.AddUserPreferenceAsync(_pref1);
-        await _service.AddUserPreferenceAsync(_pref2);
+        await _service.AddAsync(_pref1);
+        await _service.AddAsync(_pref2);
         var result3 = await _service.GetUserPreferencesCountAsync();
 
         using (Assert.EnterMultipleScope())
@@ -391,8 +391,8 @@ public class LocalDatabaseServiceTests
     [Test]
     public async Task UpdateUserPreferenceTest_EnabledStatusChanges()
     {
-        await _service.AddUserPreferenceAsync(_pref1);
-        await _service.AddUserPreferenceAsync(_pref2);
+        await _service.AddAsync(_pref1);
+        await _service.AddAsync(_pref2);
 
         var prefs = await _service.GetUserPreferencesAsync();
 
@@ -403,7 +403,7 @@ public class LocalDatabaseServiceTests
         }
 
         _pref1.Value = false;
-        await _service.UpdateUserPreferenceAsync(_pref1);
+        await _service.UpdateAsync(_pref1);
 
         prefs = await _service.GetUserPreferencesAsync();
 
