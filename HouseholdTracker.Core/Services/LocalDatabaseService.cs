@@ -22,6 +22,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     {
         await _db.CreateTableAsync<Item>().ConfigureAwait(true);
         await _db.CreateTableAsync<ItemGroup>().ConfigureAwait(true);
+        await _db.CreateTableAsync<UserPreferences>().ConfigureAwait(true);
     }
 
     #region "ItemGroup"
@@ -55,7 +56,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="group">The Item Group to add</param>
     /// <returns></returns>
-    internal Task<int> AddItemGroupAsync(ItemGroup group) =>
+    internal Task<int> AddAsync(ItemGroup group) =>
         _db.InsertAsync(group);
 
     /// <summary>
@@ -63,7 +64,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="group">The Item Group to update</param>
     /// <returns></returns>
-    internal Task<int> UpdateItemGroupAsync(ItemGroup group) =>
+    internal Task<int> UpdateAsync(ItemGroup group) =>
         _db.UpdateAsync(group);
 
     /// <summary>
@@ -71,7 +72,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="group">The Item Group to delete</param>
     /// <returns></returns>
-    internal Task<int> DeleteItemGroupAsync(ItemGroup group) =>
+    internal Task<int> DeleteAsync(ItemGroup group) =>
         _db.DeleteAsync(group);
 
     /// <summary>
@@ -113,7 +114,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="itm">The Item to add</param>
     /// <returns></returns>
-    internal Task<int> AddItemAsync(Item itm) =>
+    internal Task<int> AddAsync(Item itm) =>
         _db.InsertAsync(itm);
 
     /// <summary>
@@ -121,7 +122,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="itm">The Item to update</param>
     /// <returns></returns>
-    internal Task<int> UpdateItemAsync(Item itm) =>
+    internal Task<int> UpdateAsync(Item itm) =>
         _db.UpdateAsync(itm);
 
     /// <summary>
@@ -129,7 +130,7 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// </summary>
     /// <param name="itm">The Item to delete</param>
     /// <returns></returns>
-    internal Task<int> DeleteItemAsync(Item itm) =>
+    internal Task<int> DeleteAsync(Item itm) =>
         _db.DeleteAsync(itm);
 
     /// <summary>
@@ -138,6 +139,55 @@ public class LocalDatabaseService(string dbPath) : IAsyncDisposable
     /// <returns></returns>
     internal Task<int> DeleteItemAllAsync() =>
         _db.DeleteAllAsync<Item>();
+    #endregion
+
+    #region "User Preferences"
+    /// <summary>
+    /// Method to get all of the User Preferences on the local database
+    /// The UserId does not matter, as this will be controlled elsewhere to
+    /// ensure only this users UserPreferences are pulled down from the server
+    /// </summary>
+    /// <returns>The User Preferences in the local database</returns>
+    internal Task<List<UserPreferences>> GetUserPreferencesAsync() =>
+        _db.Table<UserPreferences>().ToListAsync();
+
+    /// <summary>
+    /// Method to get the count of UserPreferences on the local database
+    /// </summary>
+    /// <returns>The number of User Preferences in the local database</returns>
+    internal Task<int> GetUserPreferencesCountAsync() =>
+        _db.Table<UserPreferences>().CountAsync();
+
+    /// <summary>
+    /// Method to add a new UserPreference to the local database
+    /// </summary>
+    /// <param name="pref">The UserPreference to add</param>
+    /// <returns></returns>
+    internal Task<int> AddAsync(UserPreferences pref) =>
+        _db.InsertAsync(pref);
+
+    /// <summary>
+    /// Method to update a UserPreference on the local database
+    /// </summary>
+    /// <param name="pref">The UserPreference to update</param>
+    /// <returns></returns>
+    internal Task<int> UpdateAsync(UserPreferences pref) =>
+        _db.UpdateAsync(pref);
+
+    /// <summary>
+    /// Method to delete a specific UserPreference from the local database
+    /// </summary>
+    /// <param name="pref">The UserPreference to delete</param>
+    /// <returns></returns>
+    internal Task<int> DeleteAsync(UserPreferences pref) =>
+        _db.DeleteAsync(pref);
+
+    /// <summary>
+    /// Method to delete all UserPreferences from the local database
+    /// </summary>
+    /// <returns></returns>
+    internal Task<int> DeleteUserPreferencesAllAsync() =>
+        _db.DeleteAllAsync<UserPreferences>();
     #endregion
 
     /// <summary>
