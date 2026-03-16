@@ -22,6 +22,9 @@ public class LocalDatabaseServiceTests
     private Item _item2;
     private Item _item3;
 
+    private UserPreferences _pref1;
+    private UserPreferences _pref2;
+
     /// <summary>
     /// Create a new entity of the LocalDatabaseService for each test
     /// </summary>
@@ -123,6 +126,22 @@ public class LocalDatabaseServiceTests
             LastUpdateUTC = _currentDateTime.AddHours(-1),
             Enabled = false,
             SortOrder = 1
+        };
+
+        _pref1 = new UserPreferences
+        {
+            Id = 1,
+            UserId = 1,
+            Preference = Preferences.Marketing,
+            Value = true
+        };
+
+        _pref2 = new UserPreferences
+        {
+            Id = 2,
+            UserId = 1,
+            Preference = Preferences.SharedAccountAcceptance,
+            Value = false
         };
     }
 
@@ -226,7 +245,7 @@ public class LocalDatabaseServiceTests
 
     #region "Item"
     /// <summary>
-    /// Test to check if inserting 2 Items functions correctly
+    /// Test to check if inserting 3 Items functions correctly
     /// For success the total count should be 3
     /// And then remove one, giving a total of 2
     /// </summary>
@@ -306,6 +325,92 @@ public class LocalDatabaseServiceTests
         {
             Assert.That(await _service.GetItemAsync(), Has.Count.EqualTo(3));
             Assert.That(await _service.GetItemActiveAsync(), Has.Count.EqualTo(1));
+        }
+    }
+    #endregion
+
+    #region "UserPreferences"
+    /// <summary>
+    /// Test to check if inserting 2 UserPreferences functions correctly
+    /// For success the total count should be 2
+    /// And then remove one, giving a total of 1
+    /// </summary>
+    [Test]
+    public async Task AddMultipleUserPreferencesRemove1_ShouldInsertSuccessfully()
+    {
+        var result1 = await _service.AddUserPreferenceAsync(_pref1);
+        var result2 = await _service.AddUserPreferenceAsync(_pref2);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(result1, Is.EqualTo(1));
+            Assert.That(_item1.Id, Is.EqualTo(1));
+            Assert.That(result2, Is.EqualTo(1));
+            Assert.That(_item2.Id, Is.EqualTo(2));
+            Assert.That(await _service.GetUserPreferencesCountAsync(), Is.EqualTo(2));
+            Assert.That(await _service.GetUserPreferencesAsync(), Has.Count.EqualTo(2));
+        }
+
+        // Remove one of the Items
+        await _service.DeleteUserPreferenceAsync(_pref1);
+        Assert.That(await _service.GetUserPreferencesCountAsync(), Is.EqualTo(1));
+    }
+
+    /// <summary>
+    /// Test insertions, followed by deletions, followed by further insertions works
+    /// It will work if the same Id can be inserted after the database has had all its
+    /// previous Item deleted
+    /// </summary>
+    /// <returns></returns>
+    [Test]
+    public async Task InsertionDeletionInsertionUserPreferencesTest()
+    {
+        await _service.AddUserPreferenceAsync(_pref1);
+        await _service.AddUserPreferenceAsync(_pref2);
+        var result1 = await _service.GetUserPreferencesCountAsync();
+
+        await _service.DeleteUserPreferencesAllAsync();
+        var result2 = await _service.GetUserPreferencesCountAsync();
+
+        await _service.AddUserPreferenceAsync(_pref1);
+        await _service.AddUserPreferenceAsync(_pref2);
+        var result3 = await _service.GetUserPreferencesCountAsync();
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(result1, Is.EqualTo(2));
+            Assert.That(result2, Is.Zero);
+            Assert.That(result3, Is.EqualTo(2));
+        }
+    }
+
+    /// <summary>
+    /// Test updating the UserPreferences in the LocalDatabaseService
+    /// </summary>
+    /// <returns></returns>
+    [Test]
+    public async Task UpdateUserPreferenceTest_EnabledStatusChanges()
+    {
+        await _service.AddUserPreferenceAsync(_pref1);
+        await _service.AddUserPreferenceAsync(_pref2);
+
+        var prefs = await _service.GetUserPreferencesAsync();
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(prefs, Has.Count.EqualTo(2));
+            Assert.That(prefs.First(up => up.Id == 1).Value, Is.True);
+        }
+
+        _pref1.Value = false;
+        await _service.UpdateUserPreferenceAsync(_pref1);
+
+        prefs = await _service.GetUserPreferencesAsync();
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(prefs, Has.Count.EqualTo(2));
+            Assert.That(prefs.First(up => up.Id == 1).Value, Is.False);
         }
     }
     #endregion
