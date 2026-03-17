@@ -7,31 +7,26 @@
 /// CentralDabase is moved online.
 /// It also allows forced simulation of true/false
 /// </summary>
-internal class InternetConnectivityService
+/// <remarks>
+/// Constructor for the class
+/// </remarks>
+/// <param name="connectivityCheck">Uses Func-bool to check connectivity each time its accessed</param>
+internal class InternetConnectivityService(Func<bool> connectivityCheck)
 {
-    private readonly Func<bool> _connectivity;
+    private readonly Func<bool> _connectivity = connectivityCheck;
 
     private ConnectivityType _connectivityType = ConnectivityType.Default;
-
-    /// <summary>
-    /// Constructor for the class
-    /// </summary>
-    /// <param name="connectivityCheck">Uses Func-bool to check connectivity each time its accessed</param>
-    public InternetConnectivityService(Func<bool> connectivityCheck)
-    {
-        _connectivity = connectivityCheck;
-    }
 
     internal bool HasInternetConnectivity
     {
         get
         {
-            switch (_connectivityType)
+            return _connectivityType switch
             {
-                case ConnectivityType.Connected: return true;
-                case ConnectivityType.Disconnected: return false;
-                default: return _connectivity();
-            }
+                ConnectivityType.Connected => true,
+                ConnectivityType.Disconnected => false,
+                _ => _connectivity(),
+            };
         }
     }
 
