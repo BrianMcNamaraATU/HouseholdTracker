@@ -20,23 +20,8 @@ public class LoggedInUserServiceTests
     {
         LoggedInUserService.Initialize(new TestStorageLoggedInUserService());
 
-        _user1 = new RegisteredUser
-        {
-            Id = 1,
-            Username = "testuser1",
-            FirstName = "Test",
-            Password = "testpassword1",
-            APIKey = "apikey-1"
-        };
-
-        _user2 = new RegisteredUser
-        {
-            Id = 2,
-            Username = "testuser2",
-            FirstName = "Test2",
-            Password = "testpassword2",
-            APIKey = "apikey-2"
-        };
+        _user1 = new RegisteredUser(1, "testuser1", "testpassword1", "FirstName1", "LastName1", "test1@email.com", "apikey-1");
+        _user2 = new RegisteredUser(2, "testuser2", "testpassword2", "FirstName2", "LastName2", "test2@email.com", "apikey-2");
     }
 
     /// <summary>
@@ -50,7 +35,7 @@ public class LoggedInUserServiceTests
         using (Assert.EnterMultipleScope())
         {
             Assert.That(LoggedInUserService.LoggedInUserId, Is.EqualTo(1));
-            Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.EqualTo("Test"));
+            Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.EqualTo("FirstName1"));
             Assert.That(await LoggedInUserService.GetLoggedInUserAPIKeyAsync(), Is.EqualTo("apikey-1"));
         }
 
@@ -59,7 +44,7 @@ public class LoggedInUserServiceTests
         using (Assert.EnterMultipleScope())
         {
             Assert.That(LoggedInUserService.LoggedInUserId, Is.EqualTo(2));
-            Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.EqualTo("Test2"));
+            Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.EqualTo("FirstName2"));
             Assert.That(await LoggedInUserService.GetLoggedInUserAPIKeyAsync(), Is.EqualTo("apikey-2"));
         }
     }
@@ -93,7 +78,7 @@ public class LoggedInUserServiceTests
         using (Assert.EnterMultipleScope())
         {
             Assert.That(LoggedInUserService.LoggedInUserId, Is.EqualTo(2));
-            Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.EqualTo("Test2"));
+            Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.EqualTo("FirstName2"));
             Assert.That(await LoggedInUserService.GetLoggedInUserAPIKeyAsync(), Is.EqualTo("apikey-2"));
         }
     }

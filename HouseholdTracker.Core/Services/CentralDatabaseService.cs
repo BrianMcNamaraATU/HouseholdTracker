@@ -11,7 +11,7 @@ namespace HouseholdTracker.Core.Services;
 /// The constructor for the Central Database Service
 /// </remarks>
 /// <param name="dbPath">The path to the central database</param>
-public class CentralDatabaseService(string dbPath) : IAsyncDisposable
+internal class CentralDatabaseService(string dbPath) : IAsyncDisposable
 {
     private readonly SQLiteAsyncConnection _db = new(dbPath);
 

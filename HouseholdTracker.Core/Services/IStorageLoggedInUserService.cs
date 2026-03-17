@@ -5,7 +5,7 @@
 /// in a windows test environment.
 /// The Interface ensures the actual and test implementations both have the same functionality
 /// </summary>
-public interface IStorageLoggedInUserService
+internal interface IStorageLoggedInUserService
 {
     /// <summary>
     /// Get the value of an item from the Preferences
