@@ -43,7 +43,7 @@ public class LocalDatabaseServiceTests
         _itemGroup3 = new ItemGroup(3, 1, "Group3", 1, ItemSizes.ML, true, 15, false, true, 4);
 
         _item1 = new Item(1, 1, "Item1", 1, true, 100, ItemSizes.ML, 80, 80, _currentDate.AddDays(1), _currentDateTime, true, 1);
-        _item2 = new Item(2, 1, "Item2", 2, true, 100, ItemSizes.ML, 70,20, _currentDate.AddDays(2), _currentDateTime.AddDays(-1), true, 2);
+        _item2 = new Item(2, 1, "Item2", 2, true, 100, ItemSizes.ML, 70, 20, _currentDate.AddDays(2), _currentDateTime.AddDays(-1), true, 2);
         _item3 = new Item(3, 2, "Item3", 1, true, 100, ItemSizes.Grams, 90, 24, _currentDate, _currentDateTime.AddHours(-1), false, 1);
 
         _pref1 = new UserPreferences(1, 1, Preferences.Marketing, true);
