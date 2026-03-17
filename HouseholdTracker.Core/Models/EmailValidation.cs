@@ -36,7 +36,7 @@ public class EmailValidation
     /// The timestamp of when the email address was verified
     /// </summary>
     public DateTime? ValidatedUTC { get; set; } = null;
-  
+
     /// <summary>
     /// Default constructor, needed for SQLite integration
     /// </summary>
