@@ -2,16 +2,16 @@
 
 namespace HouseholdTracker.Core.Models;
 
-internal class EmailValidation
+public class EmailValidation
 {
     [PrimaryKey, AutoIncrement]
-    public int Id { get; private set; }
-    public int UserId { get; internal set; }
-    public string PreviousEmail { get; internal set; } = string.Empty;
-    public string NewEmail { get; internal set; } = string.Empty;
-    public string EmailCode { get; internal set; } = string.Empty;
-    public DateTime SentUTC { get; internal set; } = DateTime.MinValue;
-    public DateTime? ValidatedUTC { get; internal set; } = null;
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public string PreviousEmail { get; set; } = string.Empty;
+    public string NewEmail { get; set; } = string.Empty;
+    public string EmailCode { get; set; } = string.Empty;
+    public DateTime SentUTC { get; set; } = DateTime.MinValue;
+    public DateTime? ValidatedUTC { get; set; } = null;
 
     public EmailValidation() { }
 

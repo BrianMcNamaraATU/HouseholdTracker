@@ -2,7 +2,7 @@
 
 namespace HouseholdTracker.Core.Models;
 
-internal class UserPreferences
+public class UserPreferences
 {
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
@@ -21,7 +21,7 @@ internal class UserPreferences
     }
 }
 
-internal enum Preferences
+public enum Preferences
 {
     None = 0,
     Marketing = 1,

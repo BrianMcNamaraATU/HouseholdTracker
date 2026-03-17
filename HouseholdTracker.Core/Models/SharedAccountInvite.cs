@@ -2,7 +2,7 @@
 
 namespace HouseholdTracker.Core.Models;
 
-internal class SharedAccountInvite
+public class SharedAccountInvite
 {
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }

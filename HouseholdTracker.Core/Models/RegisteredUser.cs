@@ -2,7 +2,7 @@
 
 namespace HouseholdTracker.Core.Models;
 
-internal class RegisteredUser
+public class RegisteredUser
 {
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }

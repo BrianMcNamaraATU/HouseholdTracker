@@ -38,111 +38,16 @@ public class LocalDatabaseServiceTests
         _currentDate = DateTime.Today;
         _currentDateTime = DateTime.UtcNow;
 
-        _itemGroup1 = new ItemGroup
-        {
-            Id = 1,
-            UserId = 1,
-            Name = "Group1",
-            DefaultIcon = 1,
-            DefaultItemSize = ItemSizes.Grams,
-            DefaultExpiryVisible = true,
-            DefaultLowPercentageWarning = 25,
-            Enabled = true,
-            OnlineMatched = true,
-            SortOrder = 1
-        };
+        _itemGroup1 = new ItemGroup(1, 1, "Group1", 1, ItemSizes.Grams, true, 25, true, true, 1);
+        _itemGroup2 = new ItemGroup(2, 1, "Group2", 2, ItemSizes.Grams, false, 10, true, true, 2);
+        _itemGroup3 = new ItemGroup(3, 1, "Group3", 1, ItemSizes.ML, true, 15, false, true, 4);
 
-        _itemGroup2 = new ItemGroup
-        {
-            Id = 2,
-            UserId = 1,
-            Name = "Group2",
-            DefaultIcon = 2,
-            DefaultItemSize = ItemSizes.Grams,
-            DefaultExpiryVisible = false,
-            DefaultLowPercentageWarning = 10,
-            Enabled = true,
-            OnlineMatched = true,
-            SortOrder = 2
-        };
+        _item1 = new Item(1, 1, "Item1", 1, true, 100, ItemSizes.ML, 80, 80, _currentDate.AddDays(1), _currentDateTime, true, 1);
+        _item2 = new Item(2, 1, "Item2", 2, true, 100, ItemSizes.ML, 70,20, _currentDate.AddDays(2), _currentDateTime.AddDays(-1), true, 2);
+        _item3 = new Item(3, 2, "Item3", 1, true, 100, ItemSizes.Grams, 90, 24, _currentDate, _currentDateTime.AddHours(-1), false, 1);
 
-        _itemGroup3 = new ItemGroup
-        {
-            Id = 3,
-            UserId = 1,
-            Name = "Group3",
-            DefaultIcon = 1,
-            DefaultItemSize = ItemSizes.ML,
-            DefaultExpiryVisible = true,
-            DefaultLowPercentageWarning = 15,
-            Enabled = false,
-            OnlineMatched = true,
-            SortOrder = 3
-        };
-
-        _item1 = new Item
-        {
-            Id = 1,
-            UserId = 1,
-            Name = "Item1",
-            Icon = 1,
-            ExpiryVisible = true,
-            MaxSize = 100,
-            ItemSize = ItemSizes.ML,
-            CurrentLevelAsPercentage = 80,
-            CurrentExpiry = _currentDate.AddDays(1),
-            LastUpdateUTC = _currentDateTime,
-            Enabled = true,
-            SortOrder = 1
-        };
-
-        _item2 = new Item
-        {
-            Id = 2,
-            UserId = 1,
-            Name = "Item2",
-            Icon = 2,
-            ExpiryVisible = true,
-            MaxSize = 100,
-            ItemSize = ItemSizes.ML,
-            CurrentLevelAsPercentage = 70,
-            CurrentExpiry = _currentDate.AddDays(2),
-            LastUpdateUTC = _currentDateTime.AddDays(-1),
-            Enabled = true,
-            SortOrder = 2
-        };
-
-        _item3 = new Item
-        {
-            Id = 3,
-            UserId = 2,
-            Name = "Item3",
-            Icon = 1,
-            ExpiryVisible = true,
-            MaxSize = 100,
-            ItemSize = ItemSizes.Grams,
-            CurrentLevelAsPercentage = 90,
-            CurrentExpiry = _currentDate,
-            LastUpdateUTC = _currentDateTime.AddHours(-1),
-            Enabled = false,
-            SortOrder = 1
-        };
-
-        _pref1 = new UserPreferences
-        {
-            Id = 1,
-            UserId = 1,
-            Preference = Preferences.Marketing,
-            Value = true
-        };
-
-        _pref2 = new UserPreferences
-        {
-            Id = 2,
-            UserId = 1,
-            Preference = Preferences.SharedAccountAcceptance,
-            Value = false
-        };
+        _pref1 = new UserPreferences(1, 1, Preferences.Marketing, true);
+        _pref2 = new UserPreferences(2, 1, Preferences.SharedAccountAcceptance, false);
     }
 
     /// <summary>

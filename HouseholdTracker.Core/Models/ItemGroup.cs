@@ -2,7 +2,7 @@
 
 namespace HouseholdTracker.Core.Models;
 
-internal class ItemGroup
+public class ItemGroup
 {
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
@@ -35,7 +35,7 @@ internal class ItemGroup
 #pragma warning restore
 }
 
-internal enum ItemSizes
+public enum ItemSizes
 {
     Grams = 1,
     ML = 2
