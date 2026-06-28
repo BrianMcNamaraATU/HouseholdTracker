@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/rest api/config
+/rest api/core/Auth.php
+/HouseholdTracker/database.txt
+/rest api/.env
+/restapi/vendor
+/restapi/.env
+/restapi/.env.testing
