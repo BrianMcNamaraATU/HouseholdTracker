@@ -14,4 +14,8 @@
     <InternalsVisibleTo Include="HouseholdTracker" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="ViewModels\" />
+	</ItemGroup>
+
 </Project>
