@@ -89,7 +89,7 @@ internal sealed class LoginViewModelTests
     }
 
     /// <summary>
-    /// Ensure a successful login sets LoginSuccessful to true
+    /// Ensure a successful login invokes the OnLoginSuccess callback
     /// </summary>
     [Test]
     public async Task SuccessfulLogin_SetsLoginSuccessful()
@@ -97,19 +97,23 @@ internal sealed class LoginViewModelTests
         _apiService.LoginResult = ApiResult<RegisteredUser>.Ok(
             new RegisteredUser(1, "Brian", "Smith", "brian@example.com", "apikey-1")
         );
+
+        bool? callbackForcePasswordReset = null;
+        _viewModel.OnLoginSuccess = (forcePasswordReset) => callbackForcePasswordReset = forcePasswordReset;
+
         _viewModel.Email = "brian@example.com";
         _viewModel.Password = "Password1!";
         await _viewModel.LoginCommand.ExecuteAsync(null);
 
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(_viewModel.LoginSuccessful, Is.True);
+            Assert.That(callbackForcePasswordReset, Is.Not.Null);
             Assert.That(_viewModel.GeneralError, Is.Empty);
         }
     }
 
     /// <summary>
-    /// Ensure a successful login with force password reset sets ForcePasswordReset
+    /// Ensure a successful login with force password reset invokes callback with true
     /// </summary>
     [Test]
     public async Task SuccessfulLogin_WithForcePasswordReset_SetsFlag()
@@ -117,14 +121,18 @@ internal sealed class LoginViewModelTests
         _apiService.LoginResult = ApiResult<RegisteredUser>.Ok(
             new RegisteredUser(1, "Brian", "Smith", "brian@example.com", "apikey-1", forcePasswordReset: true)
         );
+
+        bool? callbackForcePasswordReset = null;
+        _viewModel.OnLoginSuccess = (forcePasswordReset) => callbackForcePasswordReset = forcePasswordReset;
+
         _viewModel.Email = "brian@example.com";
         _viewModel.Password = "TempPass123";
         await _viewModel.LoginCommand.ExecuteAsync(null);
 
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(_viewModel.LoginSuccessful, Is.True);
-            Assert.That(_viewModel.ForcePasswordReset, Is.True);
+            Assert.That(callbackForcePasswordReset, Is.Not.Null);
+            Assert.That(callbackForcePasswordReset, Is.True);
         }
     }
 
