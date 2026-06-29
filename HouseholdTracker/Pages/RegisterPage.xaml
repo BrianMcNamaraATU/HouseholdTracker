@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="HouseholdTracker.Pages.RegisterPage"
+    Title=""
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="32,60,32,32" Spacing="0">
+
+            <!-- Title -->
+            <Label
+                Text="Household Tracker"
+                Style="{StaticResource PageTitleStyle}"
+                Margin="0,0,0,4" />
+            <Label
+                Text="Create a new account"
+                Style="{StaticResource PageSubtitleStyle}" />
+
+            <!-- Card -->
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="0">
+
+                    <!-- First Name -->
+                    <Label Text="First Name" Style="{StaticResource FieldLabelStyle}" />
+                    <Border Style="{StaticResource EntryBorderStyle}">
+                        <Entry
+                            x:Name="FirstNameEntry"
+                            Style="{StaticResource EntryStyle}"
+                            Text="{Binding FirstName}"
+                            Placeholder="Enter your first name"
+                            MaxLength="20"
+                            ReturnType="Next"
+                            ReturnCommand="{Binding Source={x:Reference LastNameEntry}, Path=Focus}" />
+                    </Border>
+                    <Label
+                        Text="{Binding FirstNameError}"
+                        Style="{StaticResource ErrorLabelStyle}"
+                        IsVisible="{Binding FirstNameError, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- Last Name -->
+                    <Label Text="Last Name" Style="{StaticResource FieldLabelStyle}" Margin="0,8,0,4" />
+                    <Border Style="{StaticResource EntryBorderStyle}">
+                        <Entry
+                            x:Name="LastNameEntry"
+                            Style="{StaticResource EntryStyle}"
+                            Text="{Binding LastName}"
+                            Placeholder="Enter your last name"
+                            MaxLength="20"
+                            ReturnType="Next"
+                            ReturnCommand="{Binding Source={x:Reference EmailEntry}, Path=Focus}" />
+                    </Border>
+                    <Label
+                        Text="{Binding LastNameError}"
+                        Style="{StaticResource ErrorLabelStyle}"
+                        IsVisible="{Binding LastNameError, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- Email -->
+                    <Label Text="Email Address" Style="{StaticResource FieldLabelStyle}" Margin="0,8,0,4" />
+                    <Border Style="{StaticResource EntryBorderStyle}">
+                        <Entry
+                            x:Name="EmailEntry"
+                            Style="{StaticResource EntryStyle}"
+                            Text="{Binding Email}"
+                            Placeholder="Enter your email address"
+                            Keyboard="Email"
+                            MaxLength="50"
+                            ReturnType="Next"
+                            ReturnCommand="{Binding Source={x:Reference PasswordEntry}, Path=Focus}" />
+                    </Border>
+                    <Label
+                        Text="{Binding EmailError}"
+                        Style="{StaticResource ErrorLabelStyle}"
+                        IsVisible="{Binding EmailError, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- Password -->
+                    <Label Text="Password" Style="{StaticResource FieldLabelStyle}" Margin="0,8,0,4" />
+                    <Border Style="{StaticResource EntryBorderStyle}">
+                        <Entry
+                            x:Name="PasswordEntry"
+                            Style="{StaticResource EntryStyle}"
+                            Text="{Binding Password}"
+                            Placeholder="Enter your password"
+                            IsPassword="True"
+                            MaxLength="20"
+                            ReturnType="Next"
+                            ReturnCommand="{Binding Source={x:Reference ConfirmPasswordEntry}, Path=Focus}" />
+                    </Border>
+                    <Label
+                        Text="{Binding PasswordError}"
+                        Style="{StaticResource ErrorLabelStyle}"
+                        IsVisible="{Binding PasswordError, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- Confirm Password -->
+                    <Label Text="Confirm Password" Style="{StaticResource FieldLabelStyle}" Margin="0,8,0,4" />
+                    <Border Style="{StaticResource EntryBorderStyle}">
+                        <Entry
+                            x:Name="ConfirmPasswordEntry"
+                            Style="{StaticResource EntryStyle}"
+                            Text="{Binding ConfirmPassword}"
+                            Placeholder="Confirm your password"
+                            IsPassword="True"
+                            MaxLength="20"
+                            ReturnType="Done"
+                            ReturnCommand="{Binding RegisterCommand}" />
+                    </Border>
+                    <Label
+                        Text="{Binding ConfirmPasswordError}"
+                        Style="{StaticResource ErrorLabelStyle}"
+                        IsVisible="{Binding ConfirmPasswordError, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- General Error -->
+                    <Label
+                        Text="{Binding GeneralError}"
+                        Style="{StaticResource GeneralErrorLabelStyle}"
+                        IsVisible="{Binding GeneralError, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- Loading Indicator -->
+                    <ActivityIndicator
+                        Style="{StaticResource LoadingIndicatorStyle}"
+                        IsRunning="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}" />
+
+                    <!-- Register Button -->
+                    <Button
+                        Text="Create Account"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding RegisterCommand}" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Login Link -->
+            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,24,0,0" Spacing="4">
+                <Label
+                    Text="Already have an account?"
+                    FontSize="13"
+                    TextColor="{StaticResource SecondaryTextColor}"
+                    VerticalOptions="Center" />
+                <Label
+                    Text="Sign in here"
+                    Style="{StaticResource LinkLabelStyle}"
+                    Margin="0"
+                    VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLoginTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
