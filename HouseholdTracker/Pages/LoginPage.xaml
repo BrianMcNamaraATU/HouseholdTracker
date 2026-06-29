@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:HouseholdTracker.Core.ViewModels;assembly=HouseholdTracker.Core"
+    x:Class="HouseholdTracker.Pages.LoginPage"
+    Title=""
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="32,60,32,32" Spacing="0">
+
+            <!-- Title -->
+            <Label
+                Text="Household Tracker"
+                Style="{StaticResource PageTitleStyle}"
+                Margin="0,0,0,4" />
+            <Label
+                Text="Sign in to your account"
+                Style="{StaticResource PageSubtitleStyle}" />
+
+            <!-- Card -->
+            <Border Style="{StaticResource CardStyle}">
+                <VerticalStackLayout Spacing="0">
+
+                    <!-- Email -->
+                    <Label Text="Email Address" Style="{StaticResource FieldLabelStyle}" />
+                    <Border Style="{StaticResource EntryBorderStyle}">
+                        <Entry
+                            x:Name="EmailEntry"
+                            Style="{StaticResource EntryStyle}"
+                            Text="{Binding Email}"
+                            Placeholder="Enter your email address"
+                            Keyboard="Email"
+                            ReturnType="Next"
+                            ReturnCommand="{Binding Source={x:Reference PasswordEntry}, Path=Focus}" />
+                    </Border>
+                    <Label
+                        Text="{Binding EmailError}"
+                        Style="{StaticResource ErrorLabelStyle}"
+                        IsVisible="{Binding EmailError, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- Password -->
+                    <Label Text="Password" Style="{StaticResource FieldLabelStyle}" Margin="0,8,0,4" />
+                    <Border Style="{StaticResource EntryBorderStyle}">
+                        <Entry
+                            x:Name="PasswordEntry"
+                            Style="{StaticResource EntryStyle}"
+                            Text="{Binding Password}"
+                            Placeholder="Enter your password"
+                            IsPassword="True"
+                            ReturnType="Done"
+                            ReturnCommand="{Binding LoginCommand}" />
+                    </Border>
+                    <Label
+                        Text="{Binding PasswordError}"
+                        Style="{StaticResource ErrorLabelStyle}"
+                        IsVisible="{Binding PasswordError, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- General Error -->
+                    <Label
+                        Text="{Binding GeneralError}"
+                        Style="{StaticResource GeneralErrorLabelStyle}"
+                        IsVisible="{Binding GeneralError, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <!-- Loading Indicator -->
+                    <ActivityIndicator
+                        Style="{StaticResource LoadingIndicatorStyle}"
+                        IsRunning="{Binding IsBusy}"
+                        IsVisible="{Binding IsBusy}" />
+
+                    <!-- Login Button -->
+                    <Button
+                        Text="Sign In"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding LoginCommand}" />
+
+                    <!-- Forgot Password -->
+                    <Label
+                        Text="Forgot your password?"
+                        Style="{StaticResource LinkLabelStyle}"
+                        Margin="0,8,0,0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Register Link -->
+            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,24,0,0" Spacing="4">
+                <Label
+                    Text="Don't have an account?"
+                    FontSize="13"
+                    TextColor="{StaticResource SecondaryTextColor}"
+                    VerticalOptions="Center" />
+                <Label
+                    Text="Register here"
+                    Style="{StaticResource LinkLabelStyle}"
+                    Margin="0"
+                    VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRegisterTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -1,4 +1,6 @@
 ﻿using HouseholdTracker.Core.Services;
+using HouseholdTracker.Core.ViewModels;
+using HouseholdTracker.Pages;
 using HouseholdTracker.Services;
 using Microsoft.Extensions.Logging;
 
@@ -20,14 +22,38 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-        // Database locations
+
+        // Database location
         var localDbPath = Path.Combine(FileSystem.AppDataDirectory, "localDatabase.db");
 
-        // Static objects
-        LoggedInUserService.Initialize(new MauiStorageLoggedInUserService());
+        // Storage
+        var storageService = new MauiStorageLoggedInUserService();
+        LoggedInUserService.Initialize(storageService);
+        builder.Services.AddSingleton<IStorageLoggedInUserService>(storageService);
 
-        // Add a reference to the Services
+        // HTTP Client and API Service
+        builder.Services.AddSingleton<HttpClient>();
+        builder.Services.AddSingleton<IApiService, ApiService>();
+
+        // Local database
         builder.Services.AddSingleton(new LocalDatabaseService(localDbPath));
+
+        // ViewModels
+        builder.Services.AddTransient<LoginViewModel>();
+        builder.Services.AddTransient<RegisterViewModel>();
+        builder.Services.AddTransient<ForgotPasswordViewModel>();
+        builder.Services.AddTransient<ChangePasswordViewModel>();
+
+        // Pages
+        builder.Services.AddTransient<LoadingPage>();
+        builder.Services.AddTransient<LoginPage>();
+        builder.Services.AddTransient<RegisterPage>();
+        builder.Services.AddTransient<ForgotPasswordPage>();
+        builder.Services.AddTransient<ChangePasswordPage>();
+        builder.Services.AddTransient<MyTrackingPage>();
+
+        // Shell
+        builder.Services.AddSingleton<AppShell>();
 
         return builder.Build();
     }

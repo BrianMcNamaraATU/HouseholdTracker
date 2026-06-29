@@ -20,8 +20,8 @@ public class LoggedInUserServiceTests
     {
         LoggedInUserService.Initialize(new TestStorageLoggedInUserService());
 
-        _user1 = new RegisteredUser(1, "testuser1", "testpassword1", "FirstName1", "LastName1", "test1@email.com", "apikey-1");
-        _user2 = new RegisteredUser(2, "testuser2", "testpassword2", "FirstName2", "LastName2", "test2@email.com", "apikey-2");
+        _user1 = new RegisteredUser(1, "FirstName1", "LastName1", "test1@email.com", "apikey-1");
+        _user2 = new RegisteredUser(2, "FirstName2", "LastName2", "test2@email.com", "apikey-2");
     }
 
     /// <summary>
@@ -34,23 +34,25 @@ public class LoggedInUserServiceTests
 
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(LoggedInUserService.LoggedInUserId, Is.EqualTo(1));
+            Assert.That(await LoggedInUserService.GetLoggedInUserIdAsync(), Is.EqualTo(1));
             Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.EqualTo("FirstName1"));
             Assert.That(await LoggedInUserService.GetLoggedInUserAPIKeyAsync(), Is.EqualTo("apikey-1"));
+            Assert.That(await LoggedInUserService.GetLoggedInUserEmailAsync(), Is.EqualTo("test1@email.com"));
         }
 
         await LoggedInUserService.LoginUserAsync(_user2);
 
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(LoggedInUserService.LoggedInUserId, Is.EqualTo(2));
+            Assert.That(await LoggedInUserService.GetLoggedInUserIdAsync(), Is.EqualTo(2));
             Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.EqualTo("FirstName2"));
             Assert.That(await LoggedInUserService.GetLoggedInUserAPIKeyAsync(), Is.EqualTo("apikey-2"));
+            Assert.That(await LoggedInUserService.GetLoggedInUserEmailAsync(), Is.EqualTo("test2@email.com"));
         }
     }
 
     /// <summary>
-    /// Ensure that when a user Logs out that the values are cleared, and that it is then
+    /// Ensure that when a user logs out the values are cleared, and that it is then
     /// possible to login again
     /// </summary>
     [Test]
@@ -58,9 +60,10 @@ public class LoggedInUserServiceTests
     {
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(LoggedInUserService.LoggedInUserId, Is.Null);
+            Assert.That(await LoggedInUserService.GetLoggedInUserIdAsync(), Is.Null);
             Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.Null.Or.Empty);
             Assert.That(await LoggedInUserService.GetLoggedInUserAPIKeyAsync(), Is.Null.Or.Empty);
+            Assert.That(await LoggedInUserService.GetLoggedInUserEmailAsync(), Is.Null.Or.Empty);
         }
 
         await LoggedInUserService.LoginUserAsync(_user1);
@@ -68,18 +71,20 @@ public class LoggedInUserServiceTests
 
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(LoggedInUserService.LoggedInUserId, Is.Null);
+            Assert.That(await LoggedInUserService.GetLoggedInUserIdAsync(), Is.Null);
             Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.Null.Or.Empty);
             Assert.That(await LoggedInUserService.GetLoggedInUserAPIKeyAsync(), Is.Null.Or.Empty);
+            Assert.That(await LoggedInUserService.GetLoggedInUserEmailAsync(), Is.Null.Or.Empty);
         }
 
         await LoggedInUserService.LoginUserAsync(_user2);
 
         using (Assert.EnterMultipleScope())
         {
-            Assert.That(LoggedInUserService.LoggedInUserId, Is.EqualTo(2));
+            Assert.That(await LoggedInUserService.GetLoggedInUserIdAsync(), Is.EqualTo(2));
             Assert.That(await LoggedInUserService.GetLoggedInUserFirstNameAsync(), Is.EqualTo("FirstName2"));
             Assert.That(await LoggedInUserService.GetLoggedInUserAPIKeyAsync(), Is.EqualTo("apikey-2"));
+            Assert.That(await LoggedInUserService.GetLoggedInUserEmailAsync(), Is.EqualTo("test2@email.com"));
         }
     }
 }

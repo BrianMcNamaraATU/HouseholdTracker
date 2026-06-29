@@ -4,11 +4,18 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:HouseholdTracker.Pages"
-    Title="HouseholdTracker">
+    Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Household Tracker"
-        ContentTemplate="{DataTemplate pages:MainPage}"
-        Route="MainPage" />
+    <!-- Pre-login pages — hidden from flyout -->
+    <ShellContent Route="LoadingPage"        ContentTemplate="{DataTemplate pages:LoadingPage}"        FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled" />
+    <ShellContent Route="LoginPage"          ContentTemplate="{DataTemplate pages:LoginPage}"          FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled" />
+    <ShellContent Route="RegisterPage"       ContentTemplate="{DataTemplate pages:RegisterPage}"       FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled" />
+    <ShellContent Route="ForgotPasswordPage" ContentTemplate="{DataTemplate pages:ForgotPasswordPage}" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled" />
+    <ShellContent Route="ChangePasswordPage" ContentTemplate="{DataTemplate pages:ChangePasswordPage}" FlyoutItemIsVisible="False" Shell.FlyoutBehavior="Disabled" />
+
+    <!-- Post-login pages — flyout menu enabled -->
+    <FlyoutItem Title="My Tracking" Route="MyTrackingPage" Shell.FlyoutBehavior="Flyout">
+        <ShellContent ContentTemplate="{DataTemplate pages:MyTrackingPage}" />
+    </FlyoutItem>
 
 </Shell>

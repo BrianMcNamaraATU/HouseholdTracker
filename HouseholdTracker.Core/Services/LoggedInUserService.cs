@@ -20,32 +20,58 @@ internal static class LoggedInUserService
         s_storage = storage;
     }
 
-    internal static int? LoggedInUserId
+    /// <summary>
+    /// Get the Id of the currently logged in user from SecureStorage,
+    /// or null if no user is logged in
+    /// </summary>
+    /// <returns>The Id of the logged in user, or null if not set</returns>
+    internal static async Task<int?> GetLoggedInUserIdAsync()
     {
-        get
-        {
-            var id = s_storage.GetPreference("UserId", 0);
-            return id != 0 ? id : null;
-        }
+        var value = await s_storage.GetSecureAsync(Constants.StorageKeyUserId);
+        return int.TryParse(value, out var id) && id != 0 ? id : null;
     }
 
+    /// <summary>
+    /// Get the first name of the currently logged in user from SecureStorage
+    /// </summary>
+    /// <returns>The first name of the logged in user, or null if not set</returns>
     internal static async Task<string?> GetLoggedInUserFirstNameAsync() =>
-        await s_storage.GetSecureAsync("firstName");
+        await s_storage.GetSecureAsync(Constants.StorageKeyFirstName);
 
+    /// <summary>
+    /// Get the email address of the currently logged in user from SecureStorage
+    /// </summary>
+    /// <returns>The email address of the logged in user, or null if not set</returns>
+    internal static async Task<string?> GetLoggedInUserEmailAsync() =>
+        await s_storage.GetSecureAsync(Constants.StorageKeyEmail);
+
+    /// <summary>
+    /// Get the API key of the currently logged in user from SecureStorage
+    /// </summary>
+    /// <returns>The API key of the logged in user, or null if not set</returns>
     internal static async Task<string?> GetLoggedInUserAPIKeyAsync() =>
-        await s_storage.GetSecureAsync("apiKey");
+        await s_storage.GetSecureAsync(Constants.StorageKeyApiKey);
 
+    /// <summary>
+    /// Store the logged in user's details in SecureStorage
+    /// </summary>
+    /// <param name="activeUser">The RegisteredUser who has logged in</param>
     internal static async Task LoginUserAsync(RegisteredUser activeUser)
     {
-        s_storage.SetPreference("UserId", activeUser.Id);
-        await s_storage.SetSecureAsync("apiKey", activeUser.APIKey);
-        await s_storage.SetSecureAsync("firstName", activeUser.FirstName);
+        await s_storage.SetSecureAsync(Constants.StorageKeyUserId, activeUser.Id.ToString());
+        await s_storage.SetSecureAsync(Constants.StorageKeyApiKey, activeUser.APIKey);
+        await s_storage.SetSecureAsync(Constants.StorageKeyFirstName, activeUser.FirstName);
+        await s_storage.SetSecureAsync(Constants.StorageKeyEmail, activeUser.Email);
     }
 
+    /// <summary>
+    /// Clear the logged in user's details from SecureStorage
+    /// </summary>
     internal static async Task LogoutUserAsync()
     {
-        s_storage.SetPreference("UserId", 0);
-        await s_storage.SetSecureAsync("apiKey", "");
-        await s_storage.SetSecureAsync("firstName", "");
+        await s_storage.SetSecureAsync(Constants.StorageKeyUserId, string.Empty);
+        await s_storage.SetSecureAsync(Constants.StorageKeyApiKey, string.Empty);
+        await s_storage.SetSecureAsync(Constants.StorageKeyFirstName, string.Empty);
+        await s_storage.SetSecureAsync(Constants.StorageKeyEmail, string.Empty);
     }
 }
